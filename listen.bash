@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
-
 function listen() {
+    [[ "${1}" == '-h' ]] && \
+        printf '%s\n' "default: rec -c 2 listen_TIMESTAMP.ogg trim 0 10:00" && return 0
     local cmd
     local savedir
     local format
     local trim
+    local date
+    date=$(date +%FT%T%Z)
 
     while [[ "${#1}" -gt 0 ]]; do
         case "${1}" in
@@ -26,10 +29,10 @@ function listen() {
     format="${format:-ogg}"
     trim="${trim:-10:00}"
 
-    cmd=$'command rec -c 2 "${savedir}"/radio."${format/\./}" trim 0 "${trim}"'
+    cmd=$'command rec -c 2 "${savedir}"/listen_"${date}"."${format/\./}" trim 0 "${trim}"'
     printf 'command: %s\n' "${cmd}"
 
-    command -v sox >/dev/null 2>&1 || { echo >&2 "I require sox but it's not installed.  Aborting."; exit 1; }
+    command -v sox >/dev/null 2>&1 || { echo >&2 "I require sox but it's not installed.  Aborting."; return 1; }
     eval "${cmd}"
 }
 
