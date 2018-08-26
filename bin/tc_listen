@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-function tc-listen() {
+function tc_listen() {
     [[ "${1}" == '-h' ]] && \
         printf '%s\n' "default: rec -c 2 listen_TIMESTAMP.ogg trim 0 10:00" && return 0
     local cmd
@@ -38,8 +38,8 @@ function tc-listen() {
 
 
 if [[ ${BASH_SOURCE[0]} != $0 ]]; then
-    export -f tc-listen
+    export -f tc_listen
 else
-    listen.bash "${@}"
+    tc_listen "${@}"
     exit $?
 fi

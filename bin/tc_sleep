@@ -1,13 +1,13 @@
 #!/bin/bash
 
-function sleep() {
+function tc_sleep() {
     pmset displaysleepnow
 }
 
 
 if [[ ${BASH_SOURCE[0]} != $0 ]]; then
-    export -f sleep
+    export -f tc_sleep
 else
-    sleep "${@}"
+    tc_sleep "${@}"
     exit $?
 fi
