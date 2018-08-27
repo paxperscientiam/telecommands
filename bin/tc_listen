@@ -25,11 +25,17 @@ function tc_listen() {
         shift 1
     done
 
-    savedir="${savedir:-$TMPDIR}"
+    [[ -d "${TMPDIR:?}/tc_listen" ]] || mkdir "${TMPDIR:?}/tc_listen"
+
+
+    savedir_default="${TMPDIR:?}/tc_listen/"
+
+    savedir="${savedir:-$savedir_default}"
+
     format="${format:-ogg}"
     trim="${trim:-10:00}"
 
-    cmd=$'command rec -c 2 "${savedir}"/listen_"${date}"."${format/\./}" trim 0 "${trim}"'
+    cmd=$'command rec -c 2 ${savedir:?}/listen_${date}.${format/\./} trim 0 ${trim}'
     printf 'command: %s\n' "${cmd}"
 
     command -v sox >/dev/null 2>&1 || { echo >&2 "I require sox but it's not installed.  Aborting."; return 1; }
